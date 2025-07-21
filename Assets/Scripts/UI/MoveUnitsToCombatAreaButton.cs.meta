@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 0a0979ee3f2f6f54cbd59b3d18cb4d3f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - combatArea: {fileID: -3334654614360536658, guid: cac667013cd60044fab197c30663c8b6, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,68 @@
+GAME ARCHITECTURE DIAGRAM (SEMPLIFICATO)
+
+[GameManager] (Singleton)
+│
+├──→ Holds reference to: [BuildingUI]
+├──→ Provides: building prefabs (civil, military)
+
+[InputManager]
+│
+├──→ Detects user interaction (touch / mouse)
+├──→ References: [Tile]
+├──→ Controls: [BuildMenuUI], [CivilBuildingUI]
+├──→ Interacts with: [GameManager] for prefab spawning
+│
+└──→ Calls: Tile.SetBuilding(...)
+
+[Tile]
+│
+├──→ Contains: [BuildingBase?] (can be null)
+└──→ Public: SetBuilding(), RemoveBuilding(), HasBuilding
+
+[BuildingBase] (abstract)
+│
+├──→ Implements: Queue<UnitType>, IsBusy flag
+├──→ Derived by:
+│   ├── [CivilBuilding]
+│   │   └──→ Produces: Citizen
+│   └── [MilitaryBuilding]
+│       └──→ Produces: Soldier
+│
+└──→ Interacts with: [UnitManager] via EnqueueProduction
+
+[UnitManager] (Singleton)
+│
+├──→ Handles: production queue, citizens/soldiers
+├──→ Produces citizens via coroutine
+├──→ Commands all soldiers to attack
+├──→ Fires event: OnCitizenCountChanged
+├──→ References: [ResourceManager], [SoldierUnit]
+│
+└──→ Adds: Citizens, Soldiers
+
+[SoldierUnit]
+│
+├──→ Has mode: Defending / Attacking
+└──→ Navigates using NavMeshAgent
+
+[ResourceManager] (Singleton)
+│
+├──→ Tracks: food, gold, citizens on resources
+├──→ Spends resources for unit production
+├──→ Updates resources over time
+├──→ Fires events: OnGoldChanged, OnFoodChanged
+└──→ Used by: UnitManager, HUDManager
+
+[HUDManager]
+│
+├──→ Subscribes to: OnGoldChanged, OnFoodChanged, OnCitizenCountChanged
+└──→ Updates UI Text fields
+
+[BuildingUI]
+│
+└──→ Sends commands to: currentBuilding.ProduceUnit()
+
+[UICitizenButton]
+│
+└──→ Finds: available [CivilBuilding] to produce citizen
+

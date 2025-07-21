@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ba03b76b5ff51a74c817b327c05f2807
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 211807
+  packageName: Medieval Houses With Construction Animation
+  packageVersion: 1.0
+  assetPath: Assets/ConstructableMedievalHouses/Art/Shader/BuildingEffect.shader
+  uploadId: 482386

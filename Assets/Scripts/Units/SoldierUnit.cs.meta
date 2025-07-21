@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 1de4a89f9df5da241b92e1973c4e4b2a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - defendPoint: {fileID: 5326128050449497371, guid: 8501222168e4c874dbeb548bae68dc7a, type: 3}
+  - enemyVillage: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

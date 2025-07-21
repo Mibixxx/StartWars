@@ -1,0 +1,4 @@
+repository "StratWars/StratWars@6872763101368@cloud"
+  path "/"
+    br "/main"
+    co "/main"
