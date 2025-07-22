@@ -48,13 +48,13 @@ public class HUDManager : MonoBehaviour
 
     private void UpdateIdleCitizensText(int count)
     {
-        idleCitizensText.text = $"Idle: {count}";
+        idleCitizensText.text = $"{count}";
     }
 
     private void UpdateWorkerTexts()
     {
-        goldWorkersText.text = $"Gold: {ResourceManager.Instance.citizensOnGold}";
-        foodWorkersText.text = $"Food: {ResourceManager.Instance.citizensOnFood}";
+        goldWorkersText.text = $"{ResourceManager.Instance.citizensOnGold}";
+        foodWorkersText.text = $"{ResourceManager.Instance.citizensOnFood}";
     }
 
     private void UpdateUnitCountText()

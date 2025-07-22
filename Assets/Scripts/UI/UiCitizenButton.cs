@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 
 public class UICitizenButton : MonoBehaviour
 {
@@ -10,18 +11,20 @@ public class UICitizenButton : MonoBehaviour
             return;
         }
 
-        // Non serve sapere da quale struttura proviene, ne scegliamo una qualsiasi
         var buildings = Object.FindObjectsByType<CivilBuilding>(FindObjectsSortMode.None);
 
-        foreach (var b in buildings)
-        {
-            if (b.CanProduce(UnitType.Citizen))
-            {
-                b.ProduceUnit(UnitType.Citizen);
-                return;
-            }
-        }
+        var target = buildings
+            .Where(b => b.CanProduce(UnitType.Citizen))
+            .OrderBy(b => b.GetQueue().Count)
+            .FirstOrDefault();
 
-        Debug.LogWarning("Nessuna struttura civile disponibile per la produzione.");
+        if (target != null)
+        {
+            target.ProduceUnit(UnitType.Citizen);
+        }
+        else
+        {
+            Debug.LogWarning("Nessuna struttura civile disponibile per la produzione.");
+        }
     }
 }

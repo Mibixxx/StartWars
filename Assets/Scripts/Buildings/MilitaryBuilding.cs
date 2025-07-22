@@ -4,9 +4,16 @@ public class MilitaryBuilding : BuildingBase
 {
     public Transform spawnPoint;
 
+    protected override void Start()
+    {
+        constructionTime = 5f;
+        base.Start();
+    }
+
     public override bool CanProduce(UnitType type)
     {
-        return (type == UnitType.Soldier || type == UnitType.Pike) &&
+        return !IsUnderConstruction &&
+               (type == UnitType.Soldier || type == UnitType.Pike) &&
                HasRoomInQueue() &&
                UnitManager.Instance.CanAddUnit();
     }
@@ -20,5 +27,9 @@ public class MilitaryBuilding : BuildingBase
         UnitManager.Instance.EnqueueProduction(this, type);
     }
 
-    
+    protected override void OnConstructionComplete()
+    {
+        base.OnConstructionComplete();
+        Debug.Log("Military building completed!");
+    }
 }

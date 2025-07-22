@@ -40,21 +40,26 @@ public class InputManager : MonoBehaviour
                 if (!tile.HasBuilding)
                 {
                     ShowBuildMenu(tile.transform.position);
-                    Debug.Log($"Tile vuota cliccata: {tile.name}");
                 }
                 else
                 {
                     BuildingBase building = tile.GetBuilding();
 
+                    if (building == null) return;
+
+                    if (building.IsUnderConstruction)
+                    {
+                        Debug.Log("Edificio ancora in costruzione. Interazione bloccata.");
+                        return;
+                    }
+
                     if (building is CivilBuilding)
                     {
                         ShowCivilBuildingUI(tile.transform.position);
-                        Debug.Log("UI civile mostrata");
                     }
                     else if (building is MilitaryBuilding)
                     {
                         ShowMilitaryBuildingUI(tile.transform.position);
-                        Debug.Log("UI militare mostrata");
                     }
                 }
             }
@@ -102,13 +107,6 @@ public class InputManager : MonoBehaviour
 
         GameObject building = Instantiate(buildingPrefab, buildPosition, Quaternion.identity);
         building.transform.SetParent(selectedTile.transform);
-
-        CybeRockStudio.BuildingsProgressController progressController = building.GetComponent<CybeRockStudio.BuildingsProgressController>();
-        if (progressController != null)
-        {
-            progressController.isPlaced = true;
-            progressController.Progress = 0;
-        }
 
         selectedTile.SetBuilding(building.GetComponent<BuildingBase>());
         buildMenuUI.SetActive(false);

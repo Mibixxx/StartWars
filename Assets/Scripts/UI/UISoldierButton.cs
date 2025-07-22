@@ -1,8 +1,9 @@
 using UnityEngine;
+using System.Linq;
 
-public class UIProduceUnitButton : MonoBehaviour
+public class UISoldierButton : MonoBehaviour
 {
-    public UnitType unitType; // Impostabile da Inspector
+    public UnitType unitType; // Assegnato via Inspector
 
     public void OnProduceUnitClicked()
     {
@@ -14,15 +15,18 @@ public class UIProduceUnitButton : MonoBehaviour
 
         var buildings = Object.FindObjectsByType<MilitaryBuilding>(FindObjectsSortMode.None);
 
-        foreach (var b in buildings)
-        {
-            if (b.CanProduce(unitType))
-            {
-                b.ProduceUnit(unitType);
-                return;
-            }
-        }
+        var target = buildings
+            .Where(b => b.CanProduce(unitType))
+            .OrderBy(b => b.GetQueue().Count)
+            .FirstOrDefault();
 
-        Debug.LogWarning($"Nessuna struttura militare disponibile per produrre: {unitType}");
+        if (target != null)
+        {
+            target.ProduceUnit(unitType);
+        }
+        else
+        {
+            Debug.LogWarning($"Nessuna struttura militare disponibile per produrre: {unitType}");
+        }
     }
 }
