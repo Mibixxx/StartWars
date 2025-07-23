@@ -17,7 +17,7 @@ public class TestEnemyUnit : MonoBehaviour
     public Animator animator;
     public LayerMask playerUnitLayer;
 
-    private bool IsInCombatArea = false;
+    public bool IsInCombatArea { get; private set; } = false;
     private bool isDead = false;
     private float attackTimer = 0f;
     private GameObject currentTarget;
@@ -30,6 +30,8 @@ public class TestEnemyUnit : MonoBehaviour
 
     // Shared target assignment system
     public static Dictionary<GameObject, int> TargetAssignments = new Dictionary<GameObject, int>();
+
+    public event System.Action<TestEnemyUnit> OnDeath;
 
     void Start()
     {
@@ -194,6 +196,23 @@ public class TestEnemyUnit : MonoBehaviour
         }
     }
 
+    public void MoveToRallyPoint(Vector3 rallyPoint)
+    {
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.SetDestination(rallyPoint);
+        }
+    }
+
+    public void SetFacingDirection(Vector3 dir)
+    {
+        if (dir != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
+            transform.rotation = targetRotation;
+        }
+    }
+
     public virtual void Die()
     {
         if (isDead) return;
@@ -213,7 +232,9 @@ public class TestEnemyUnit : MonoBehaviour
         }
 
         agent.enabled = false;
+        RallyPointManager.ReleasePosition(transform.position);
         Destroy(gameObject);
+        OnDeath?.Invoke(this);
     }
 
     void OnDrawGizmos()
