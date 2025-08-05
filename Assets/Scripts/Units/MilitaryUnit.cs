@@ -26,14 +26,17 @@ public abstract class MilitaryUnit : MonoBehaviour
     public int damage;
     public int armor;
 
+    public GameObject healthBarPrefab;
+    private HealthBarUI healthBarInstance;
+
     public bool IsInCombatArea { get; private set; } = false;
     protected bool isDead = false;
     private float attackTimer = 0f;
-    private GameObject currentTarget;
+    protected GameObject currentTarget;
 
     private Vector3 lastPosition;
     private float stuckTimer = 0f;
-    private float stuckThreshold = 0.1f; // movimento minimo
+    private float stuckThreshold = 1f; // movimento minimo
     private float stuckDuration = 1.5f;
 
     protected virtual void Start()
@@ -45,6 +48,14 @@ public abstract class MilitaryUnit : MonoBehaviour
 
         agent.speed = moveSpeed;
         currentHP = maxHP;
+
+        healthBarInstance = GetComponentInChildren<HealthBarUI>();
+
+        if (healthBarInstance != null)
+        {
+            healthBarInstance.Initialize(transform);
+            UpdateHealthBar();
+        }
     }
 
     protected virtual void Update()
@@ -129,8 +140,41 @@ public abstract class MilitaryUnit : MonoBehaviour
         if (enemy != null)
         {
             enemy.currentHP -= damage;
+            enemy.UpdateHealthBar();
             if (enemy.currentHP <= 0)
                 enemy.Die();
+        }
+    }
+
+    //METODO PER UNITà CON ATTACCHI A DISTANZA
+    public void ApplyDamageTo(GameObject target)
+    {
+        if (target == null) return;
+
+        TestEnemyUnit enemy = target.GetComponent<TestEnemyUnit>();
+        if (enemy != null)
+        {
+            enemy.currentHP -= damage;
+            enemy.UpdateHealthBar();
+            if (enemy.currentHP <= 0)
+                enemy.Die();
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        currentHP -= amount;
+        if (currentHP <= 0)
+            Die();
+
+        UpdateHealthBar();
+    }
+
+    public void UpdateHealthBar()
+    {
+        if (healthBarInstance != null)
+        {
+            healthBarInstance.SetHealth(currentHP, maxHP);
         }
     }
 
@@ -147,7 +191,7 @@ public abstract class MilitaryUnit : MonoBehaviour
 
     protected virtual GameObject FindBestTarget()
     {
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, 10f, enemyUnitLayer);
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, 150f, enemyUnitLayer);
 
         GameObject bestTarget = null;
         float bestScore = float.MinValue;
@@ -155,18 +199,16 @@ public abstract class MilitaryUnit : MonoBehaviour
         foreach (var col in enemiesInRange)
         {
             GameObject enemy = col.gameObject;
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
             TestEnemyUnit enemyData = enemy.GetComponent<TestEnemyUnit>();
 
-            if (enemyData == null) continue;
+            if (enemyData == null || !enemyData.IsInCombatArea) continue;
 
-            float vulnerabilityScore = 1f / (enemyData.currentHP + 1); // più vulnerabile = più alto
-            float proximityScore = 1f / (distance + 0.1f); // più vicino = più alto
-
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            float vulnerabilityScore = 1f / (enemyData.currentHP + 1);
+            float proximityScore = 1f / (distance + 1f);
             int assignedCount = TargetAssignments.ContainsKey(enemy) ? TargetAssignments[enemy] : 0;
-            float assignmentPenalty = 1f / (assignedCount + 1); // meno assegnati = più alto
+            float assignmentPenalty = 1f / (assignedCount + 1);
 
-            // Combinazione dei punteggi con pesi
             float totalScore = vulnerabilityScore * 0.3f + proximityScore * 0.5f + assignmentPenalty * 0.2f;
 
             if (totalScore > bestScore)
@@ -229,6 +271,9 @@ public abstract class MilitaryUnit : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+
+        if (healthBarInstance != null)
+            Destroy(healthBarInstance.gameObject);
 
         if (currentTarget != null && TargetAssignments.ContainsKey(currentTarget))
         {

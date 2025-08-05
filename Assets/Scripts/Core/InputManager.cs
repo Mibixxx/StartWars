@@ -1,13 +1,21 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
     public LayerMask tileLayerMask;
 
     public GameObject buildMenuUI;
-    public GameObject civilBuildingUI;
-    public GameObject militaryBuildingUI;
+    public GameObject townHallUI;
+    public GameObject barracksUI;
+    public GameObject archeryRangeUI;
+    public GameObject stableUI;
+
+    public BuildingData townHallData;
+    public BuildingData barracksData;
+    public BuildingData archeryRangeData;
+    public BuildingData stableData;
 
     private Tile selectedTile;
 
@@ -53,13 +61,21 @@ public class InputManager : MonoBehaviour
                         return;
                     }
 
-                    if (building is CivilBuilding)
+                    if (building is TownHall)
                     {
-                        ShowCivilBuildingUI(tile.transform.position);
+                        ShowTownHallUI(tile.transform.position);
                     }
-                    else if (building is MilitaryBuilding)
+                    else if (building is Barracks)
                     {
-                        ShowMilitaryBuildingUI(tile.transform.position);
+                        ShowBarracksUI(tile.transform.position);
+                    }
+                    else if (building is ArcheryRange)
+                    {
+                        ShowArcheryRangeUI(tile.transform.position);
+                    }
+                    else if (building is Stable)
+                    {
+                        ShowStableUI(tile.transform.position);
                     }
                 }
             }
@@ -71,55 +87,78 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void ShowBuildMenu(Vector3 position)
+    private Vector3 ClampToScreen(Vector3 screenPosition, RectTransform uiElement)
     {
-        HideAllMenus();
-        buildMenuUI.SetActive(true);
-        buildMenuUI.transform.position = Camera.main.WorldToScreenPoint(position + Vector3.up * 1.5f);
+        Vector2 pivotOffset = new Vector2(uiElement.rect.width * uiElement.pivot.x, uiElement.rect.height * uiElement.pivot.y);
+        Vector2 screenBounds = new Vector2(Screen.width, Screen.height);
+
+        float clampedX = Mathf.Clamp(screenPosition.x, pivotOffset.x, screenBounds.x - (uiElement.rect.width - pivotOffset.x));
+        float clampedY = Mathf.Clamp(screenPosition.y, pivotOffset.y, screenBounds.y - (uiElement.rect.height - pivotOffset.y));
+
+        return new Vector3(clampedX, clampedY, screenPosition.z);
     }
 
-    private void ShowCivilBuildingUI(Vector3 position)
+    private void ShowUIAtPosition(GameObject uiElement, Vector3 worldPosition)
     {
         HideAllMenus();
-        civilBuildingUI.SetActive(true);
-        civilBuildingUI.transform.position = Camera.main.WorldToScreenPoint(position + Vector3.up * 1.5f);
+
+        uiElement.SetActive(true);
+
+        RectTransform rt = uiElement.GetComponent<RectTransform>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPosition + Vector3.up * 1.5f);
+        uiElement.transform.position = ClampToScreen(screenPos, rt);
     }
 
-    private void ShowMilitaryBuildingUI(Vector3 position)
-    {
-        HideAllMenus();
-        militaryBuildingUI.SetActive(true);
-        militaryBuildingUI.transform.position = Camera.main.WorldToScreenPoint(position + Vector3.up * 1.5f);
-    }
+    private void ShowBuildMenu(Vector3 position) => ShowUIAtPosition(buildMenuUI, position);
+    private void ShowTownHallUI(Vector3 position) => ShowUIAtPosition(townHallUI, position);
+    private void ShowBarracksUI(Vector3 position) => ShowUIAtPosition(barracksUI, position);
+    private void ShowArcheryRangeUI(Vector3 position) => ShowUIAtPosition(archeryRangeUI, position);
+    private void ShowStableUI(Vector3 position) => ShowUIAtPosition(stableUI, position);
 
     private void HideAllMenus()
     {
         buildMenuUI.SetActive(false);
-        civilBuildingUI.SetActive(false);
-        militaryBuildingUI.SetActive(false);
+        townHallUI.SetActive(false);
+        barracksUI.SetActive(false);
+        archeryRangeUI.SetActive(false);
+        stableUI.SetActive(false);
     }
 
-    private void BuildAtSelectedTile(GameObject buildingPrefab)
+    private void BuildAtSelectedTile(BuildingData data)
     {
-        if (selectedTile == null) return;
+        if (selectedTile == null || data == null) return;
 
-        Vector3 buildPosition = selectedTile.transform.position;
+        bool success = ResourceManager.Instance.SpendResourcesForBuilding(
+            data.goldCost, data.foodCost, data.woodCost, data.stoneCost
+        );
 
-        GameObject building = Instantiate(buildingPrefab, buildPosition, Quaternion.identity);
+        if (!success)
+        {
+            Debug.Log("Risorse insufficienti per costruire: " + data.buildingName);
+            return;
+        }
+
+        GameObject building = Instantiate(data.prefab, selectedTile.transform.position, Quaternion.identity);
         building.transform.SetParent(selectedTile.transform);
 
-        selectedTile.SetBuilding(building.GetComponent<BuildingBase>());
+        BuildingBase buildingBase = building.GetComponent<BuildingBase>();
+        if (buildingBase != null)
+        {
+            buildingBase.buildingData = data;
+            selectedTile.SetBuilding(buildingBase);
+        }
+        else
+        {
+            Debug.LogError("Prefab non contiene BuildingBase: " + data.buildingName);
+        }
+
         buildMenuUI.SetActive(false);
     }
 
-
-    public void BuildCivilBuilding()
-    {
-        BuildAtSelectedTile(GameManager.Instance.civilBuildingPrefab);
-    }
-
-    public void BuildMilitaryBuilding()
-    {
-        BuildAtSelectedTile(GameManager.Instance.militaryBuildingPrefab);
-    }
+    public void BuildTownHall() => BuildAtSelectedTile(townHallData);
+    public void BuildBarracks() => BuildAtSelectedTile(barracksData);
+    public void BuildArcheryRange() => BuildAtSelectedTile(archeryRangeData);
+    public void BuildStable() => BuildAtSelectedTile(stableData);
 }

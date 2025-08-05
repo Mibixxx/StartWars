@@ -19,10 +19,13 @@ public class UnitManager : MonoBehaviour
     public List<UnitPrefabEntry> unitPrefabsList = new();
     private Dictionary<UnitType, GameObject> unitPrefabs;
     public Transform soldierRallyPoint;
+    private SoldierFormationManager formationManager;
 
     private void Awake()
     {
         Instance = this;
+
+        formationManager = new SoldierFormationManager(soldierRallyPoint, soldiers);
 
         unitPrefabs = new Dictionary<UnitType, GameObject>();
         foreach (var entry in unitPrefabsList)
@@ -59,7 +62,14 @@ public class UnitManager : MonoBehaviour
 
         if (type == UnitType.Citizen)
             AddCitizen();
-        else if (type == UnitType.Soldier || type == UnitType.Pike)
+        else if (
+        type == UnitType.Infantry ||
+        type == UnitType.Spear ||
+        type == UnitType.Archer ||
+        type == UnitType.Crossbowman ||
+        type == UnitType.Horseman ||
+        type == UnitType.Knight
+    )
             SpawnUnit(building, type);
 
         // Rimuove l'unità dalla coda locale
@@ -84,7 +94,7 @@ public class UnitManager : MonoBehaviour
             return;
         }
 
-        GameObject unitGO = Instantiate(prefab, ((MilitaryBuilding)building).spawnPoint.position, Quaternion.identity);
+        GameObject unitGO = Instantiate(prefab, building.spawnPoint.position, Quaternion.identity);
 
         MilitaryUnit unit = unitGO.GetComponent<MilitaryUnit>();
         if (unit == null)
@@ -101,7 +111,7 @@ public class UnitManager : MonoBehaviour
             return;
         }
 
-        Vector3 rallyPosition = GetNextFormationPosition();
+        Vector3 rallyPosition = formationManager.GetNextFormationPosition();
         unit.MoveToPosition(rallyPosition);
     }
 
@@ -124,55 +134,14 @@ public class UnitManager : MonoBehaviour
         return type switch
         {
             UnitType.Citizen => 3f,
-            UnitType.Soldier => 5f,
-            UnitType.Pike => 4f,
+            UnitType.Infantry => 5f,
+            UnitType.Spear => 4f,
+            UnitType.Archer => 3f,
+            UnitType.Crossbowman => 2f,
+            UnitType.Horseman => 3f,
+            UnitType.Knight => 3f,
             _ => 0f
         };
-    }
-
-    public Vector3 GetNextFormationPosition()
-    {
-        int index = soldiers.Count;
-        int soldiersPerRow = 3;
-        float spacing = 0.3f;
-
-        int row = index / soldiersPerRow;
-        int col = index % soldiersPerRow;
-
-        // Offset centrato rispetto al punto centrale
-        float offsetX = (col - (soldiersPerRow - 1) / 2f) * spacing;
-        float offsetZ = -row * spacing;
-
-        // Calcola orientamento rispetto al rally point
-        Vector3 right = soldierRallyPoint.right;
-        Vector3 forward = soldierRallyPoint.forward;
-
-        Vector3 offset = right * offsetX + forward * offsetZ;
-
-        return soldierRallyPoint.position + offset;
-    }
-
-    public void RecalculateFormation()
-    {
-        int soldiersPerRow = 3;
-        float spacing = 0.3f;
-
-        Vector3 right = soldierRallyPoint.right;
-        Vector3 forward = soldierRallyPoint.forward;
-
-        for (int i = 0; i < soldiers.Count; i++)
-        {
-            int row = i / soldiersPerRow;
-            int col = i % soldiersPerRow;
-
-            float offsetX = (col - (soldiersPerRow - 1) / 2f) * spacing;
-            float offsetZ = -row * spacing;
-
-            Vector3 offset = right * offsetX + forward * offsetZ;
-            Vector3 targetPosition = soldierRallyPoint.position + offset;
-
-            soldiers[i].MoveToPosition(targetPosition);
-        }
     }
 
     public void RemoveSoldier(MilitaryUnit soldier)
@@ -181,10 +150,9 @@ public class UnitManager : MonoBehaviour
         {
             soldiers.Remove(soldier);
             OnSoldierCountChanged?.Invoke(soldiers.Count);
-            RecalculateFormation();
+            formationManager.RecalculateFormation();
         }
     }
-
 
     public void CommandAllSoldiersToAttack()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 public static class RallyPointManager
 {
     private static HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
-    private static float positionTolerance = 0.1f;
+    private static float positionTolerance = 1f;
 
     public static Vector3 GetFreePosition(Vector3 center, float spacing, int maxPerRow = 5)
     {

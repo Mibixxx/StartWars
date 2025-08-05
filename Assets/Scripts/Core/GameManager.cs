@@ -4,8 +4,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public GameObject civilBuildingPrefab;
-    public GameObject militaryBuildingPrefab;
     public ControlBarUI controlBarUI;
 
     private bool gameEnded = false;
@@ -20,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public void UpdateControlProgress(float progress)
     {
+        currentControlProgress = progress;
+
         if (controlBarUI != null)
             controlBarUI.UpdateBar(progress);
     }

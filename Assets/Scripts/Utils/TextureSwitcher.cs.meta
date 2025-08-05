@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 345614817e747f64ba98aef02c7f6c72
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerTexture: {fileID: 2800000, guid: b655e817cf9574f4d8f6ab12821f0014, type: 3}
+  - enemyTexture: {fileID: 2800000, guid: 998b090dea4fddf4baa68873c470a631, type: 3}
+  - neutralTexture: {fileID: 2800000, guid: a50c323c3aeb1fe4e8d7e89c476b6df4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

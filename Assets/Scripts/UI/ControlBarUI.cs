@@ -22,13 +22,13 @@ public class ControlBarUI : MonoBehaviour
 
         if (leftFill != null)
         {
-            float leftAmount = 0.5f + Mathf.Max(0, progress) * 0.5f;
+            float leftAmount = 0.5f + Mathf.Clamp(progress, -1f, 1f) * 0.5f;
             leftFill.fillAmount = Mathf.Clamp01(leftAmount);
         }
 
         if (rightFill != null)
         {
-            float rightAmount = 0.5f + Mathf.Max(0, -progress) * 0.5f;
+            float rightAmount = 0.5f + Mathf.Clamp(-progress, -1f, 1f) * 0.5f;
             rightFill.fillAmount = Mathf.Clamp01(rightAmount);
         }
     }

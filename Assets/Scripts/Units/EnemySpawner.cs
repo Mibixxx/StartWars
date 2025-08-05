@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public Vector3 rallyFacingDirection = Vector3.forward; // puoi impostarla via Inspector
     public float spawnInterval = 5f;
     public int enemiesPerRow = 3;
-    public float spacing = 0.5f;
+    public float spacing = 4f;
 
     private float timer = 0f;
     private readonly System.Collections.Generic.List<TestEnemyUnit> activeEnemies = new();

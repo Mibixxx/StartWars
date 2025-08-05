@@ -14,7 +14,10 @@ public class TestEnemyUnit : MonoBehaviour
     public float attackCooldown = 1.2f;
     public int damage = 15;
 
-    public Animator animator;
+    public GameObject healthBarPrefab;
+    private HealthBarUI healthBarInstance;
+
+    protected Animator animator;
     public LayerMask playerUnitLayer;
 
     public bool IsInCombatArea { get; private set; } = false;
@@ -25,7 +28,7 @@ public class TestEnemyUnit : MonoBehaviour
 
     private Vector3 lastPosition;
     private float stuckTimer = 0f;
-    private float stuckThreshold = 0.1f; // movimento minimo
+    private float stuckThreshold = 1f; // movimento minimo
     private float stuckDuration = 1.5f; 
 
     // Shared target assignment system
@@ -43,6 +46,14 @@ public class TestEnemyUnit : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
+
+        healthBarInstance = GetComponentInChildren<HealthBarUI>();
+
+        if (healthBarInstance != null)
+        {
+            healthBarInstance.Initialize(transform);
+            UpdateHealthBar();
+        }
     }
 
     void Update()
@@ -141,7 +152,7 @@ public class TestEnemyUnit : MonoBehaviour
 
     GameObject FindBestTarget()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, 15f, playerUnitLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, 150f, playerUnitLayer);
         GameObject bestTarget = null;
         float bestScore = float.MinValue;
 
@@ -153,7 +164,7 @@ public class TestEnemyUnit : MonoBehaviour
 
             float distance = Vector3.Distance(transform.position, unit.transform.position);
             float vulnerabilityScore = 1f / (unit.currentHP + 1);
-            float proximityScore = 1f / (distance + 0.1f);
+            float proximityScore = 1f / (distance + 1f);
             int assignedCount = TargetAssignments.ContainsKey(unit.gameObject) ? TargetAssignments[unit.gameObject] : 0;
             float assignmentPenalty = 1f / (assignedCount + 1);
 
@@ -191,8 +202,26 @@ public class TestEnemyUnit : MonoBehaviour
         if (unit != null)
         {
             unit.currentHP -= damage;
+            unit.UpdateHealthBar();
             if (unit.currentHP <= 0)
                 unit.Die();
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        currentHP -= amount;
+        if (currentHP <= 0)
+            Die();
+
+        UpdateHealthBar();
+    }
+
+    public void UpdateHealthBar()
+    {
+        if (healthBarInstance != null)
+        {
+            healthBarInstance.SetHealth(currentHP, maxHP);
         }
     }
 
@@ -218,10 +247,8 @@ public class TestEnemyUnit : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        if (animator != null)
-        {
-            // animator.SetTrigger("Die");
-        }
+        if (healthBarInstance != null)
+            Destroy(healthBarInstance.gameObject);
 
         // Rimuovi assegnazione
         if (currentTarget != null && TargetAssignments.ContainsKey(currentTarget))

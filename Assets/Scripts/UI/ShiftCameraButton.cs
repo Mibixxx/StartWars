@@ -7,8 +7,8 @@ public class ShiftCameraButton : MonoBehaviour
     public float transitionDuration = 0.5f;
 
     private bool isCombatView = false;
-    private float z1 = -3.71f;
-    private float z2 = 5f;
+    private float z1 = -41f;
+    private float z2 = 40f;
     private Coroutine currentTransition;
 
     public void ToggleCameraPosition()

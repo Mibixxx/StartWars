@@ -3,14 +3,15 @@ using UnityEngine;
 
 public abstract class BuildingBase : MonoBehaviour
 {
-    public string BuildingName;
+    public BuildingData buildingData;
+    public Transform spawnPoint;
+    public string BuildingName => buildingData != null ? buildingData.buildingName : "Unnamed";
+
     public bool IsBusy { get; protected set; }
 
     protected Queue<UnitType> localQueue = new Queue<UnitType>();
     protected const int MaxLocalQueue = 5;
 
-    [Header("Construction Settings")]
-    public float constructionTime = 5f;
     public bool IsUnderConstruction { get; private set; }
 
     protected BuildingPulseEffect pulseEffect;
@@ -22,10 +23,18 @@ public abstract class BuildingBase : MonoBehaviour
         pulseEffect = GetComponentInChildren<BuildingPulseEffect>();
         progressBar = GetComponentInChildren<ProgressBarUI>();
 
-        BeginConstruction();
+        if (buildingData != null)
+        {
+            BeginConstruction(buildingData.constructionTime);
+        }
+        else
+        {
+            Debug.LogWarning("BuildingData non assegnato al prefab: " + gameObject.name);
+            BeginConstruction(5f); // fallback
+        }
     }
 
-    public void BeginConstruction()
+    public void BeginConstruction(float duration)
     {
         IsUnderConstruction = true;
 
@@ -37,20 +46,18 @@ public abstract class BuildingBase : MonoBehaviour
 
         if (progressBar != null)
         {
-            progressBar.duration = constructionTime;
+            progressBar.duration = duration;
             progressBar.StartProgress();
-            // Puoi anche collegarti a un evento OnComplete se lo aggiungi in ProgressBarUI
             StartCoroutine(WaitForConstructionCompletion());
         }
-        else
-        {
-            Debug.LogWarning("ProgressBarUI non trovata nel prefab.");
-        }
+
+        if (progressBarCanvas != null)
+            progressBarCanvas.SetActive(true);
     }
 
     private System.Collections.IEnumerator WaitForConstructionCompletion()
     {
-        yield return new WaitForSeconds(constructionTime);
+        yield return new WaitForSeconds(buildingData != null ? buildingData.constructionTime : 5f);
 
         IsUnderConstruction = false;
 

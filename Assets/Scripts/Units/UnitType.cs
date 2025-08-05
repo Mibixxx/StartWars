@@ -3,6 +3,10 @@ using UnityEngine;
 public enum UnitType
 {
     Citizen,
-    Soldier,
-    Pike
+    Infantry,
+    Spear,
+    Archer,
+    Crossbowman,
+    Horseman,
+    Knight
 }
