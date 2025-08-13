@@ -14290,6 +14290,7 @@ GameObject:
   - component: {fileID: 5996330251232648323}
   - component: {fileID: -2386409672359001510}
   - component: {fileID: 9132592670077446680}
+  - component: {fileID: -8128623384559545759}
   m_Layer: 6
   m_Name: TT_Archer
   m_TagString: Untagged
@@ -14498,6 +14499,25 @@ MonoBehaviour:
   arrowPrefab: {fileID: 1572495793246531321, guid: 7c5cd2740422c794a83fa7fa13f5779f, type: 3}
   arrowSpawnPoint: {fileID: 2109495939752148959}
   fireRate: 1.5
+--- !u!114 &-8128623384559545759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3026745761
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 9132592670077446680}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &179126
 GameObject:
   m_ObjectHideFlags: 0

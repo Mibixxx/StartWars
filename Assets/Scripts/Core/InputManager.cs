@@ -25,12 +25,11 @@ public class InputManager : MonoBehaviour
         {
             HandleTouch(Input.GetTouch(0).position);
         }
-#if UNITY_EDITOR
+
         if (Input.GetMouseButtonDown(0))
         {
             HandleTouch(Input.mousePosition);
         }
-#endif
     }
 
     private void HandleTouch(Vector2 screenPos)

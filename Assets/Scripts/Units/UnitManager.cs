@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 
 public class UnitManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class UnitManager : MonoBehaviour
     private Dictionary<UnitType, GameObject> unitPrefabs;
     public Transform soldierRallyPoint;
     private SoldierFormationManager formationManager;
+    public NetworkRunner Runner => FusionNetworkManager.Instance.GetRunner();
 
     private void Awake()
     {
@@ -94,16 +96,29 @@ public class UnitManager : MonoBehaviour
             return;
         }
 
-        GameObject unitGO = Instantiate(prefab, building.spawnPoint.position, Quaternion.identity);
+        Debug.Log($"Prefab: {prefab}");
+        Debug.Log($"Runner.LocalPlayer: {Runner.LocalPlayer}");
+        Debug.Log($"Runner.IsRunning: {Runner.IsRunning}");
 
-        MilitaryUnit unit = unitGO.GetComponent<MilitaryUnit>();
+        Vector3 spawnPos = building.spawnPoint.position;
+
+        // Spawna via Fusion
+        NetworkObject netObj = Runner.Spawn(prefab, spawnPos, Quaternion.identity, Runner.LocalPlayer);
+        if (netObj == null)
+        {
+            Debug.LogError($"Runner.Spawn ha restituito null per {type}");
+            return;
+        }
+
+        // Usa MilitaryUnit al posto di NetworkMilitaryUnit
+        MilitaryUnit unit = netObj.GetComponent<MilitaryUnit>();
         if (unit == null)
         {
             Debug.LogError($"Il prefab {type} non ha un componente MilitaryUnit!");
             return;
         }
 
-        AddSoldier(unit); // anche se è un arciere o cavaliere
+        AddSoldier(unit);
 
         if (soldierRallyPoint == null)
         {

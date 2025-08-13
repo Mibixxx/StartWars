@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4566414691374418818}
   - component: {fileID: 3996912809957701155}
+  - component: {fileID: -2440254218972671730}
   m_Layer: 0
   m_Name: TownHallPrefab
   m_TagString: Untagged
@@ -49,6 +50,24 @@ MonoBehaviour:
   buildingData: {fileID: 11400000, guid: ab715f4068289554d894bc46186e31e5, type: 2}
   spawnPoint: {fileID: 0}
   progressBarCanvas: {fileID: 6845450144729450584}
+--- !u!114 &-2440254218972671730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7948980285667227941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1987593160
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1001 &1726526789341458640
 PrefabInstance:
   m_ObjectHideFlags: 0

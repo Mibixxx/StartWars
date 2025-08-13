@@ -10742,6 +10742,7 @@ GameObject:
   - component: {fileID: 3058606087980984338}
   - component: {fileID: 8345948075854238465}
   - component: {fileID: 5171415774264061011}
+  - component: {fileID: -2404181285709628066}
   m_Layer: 6
   m_Name: TT_Crossbowman
   m_TagString: Untagged
@@ -10950,6 +10951,25 @@ MonoBehaviour:
   boltPrefab: {fileID: 4294633757738330689, guid: 4475bceb160a1b346aefe939d3df302d, type: 3}
   boltSpawnPoint: {fileID: 8113901053137840508}
   fireRate: 1
+--- !u!114 &-2404181285709628066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4598011449787922122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1809531078
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 5171415774264061011}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &4686536205050415070
 GameObject:
   m_ObjectHideFlags: 0

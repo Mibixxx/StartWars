@@ -9,7 +9,7 @@ public class Archer : MilitaryUnit
 
     private float lastShotTime = 0f;
 
-    protected override void Start()
+    public override void Spawned()
     {
         maxHP = 70;
         damage = 15;
@@ -17,7 +17,7 @@ public class Archer : MilitaryUnit
         moveSpeed = 7f;
         attackRange = 40f; // sovrascrive il valore base
 
-        base.Start();
+        base.Spawned();
     }
 
     protected override void Attack(GameObject target)

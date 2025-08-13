@@ -9,7 +9,7 @@ public class Crossbowman : MilitaryUnit
 
     private float lastShotTime = 0f;
 
-    protected override void Start()
+    public override void Spawned()
     {
         maxHP = 80;
         damage = 25;
@@ -17,7 +17,7 @@ public class Crossbowman : MilitaryUnit
         moveSpeed = 7f;
         attackRange = 40f;
 
-        base.Start();
+        base.Spawned();
     }
 
     protected override void Attack(GameObject target)

@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
+using Fusion;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class MilitaryUnit : MonoBehaviour
+public abstract class MilitaryUnit : NetworkBehaviour
 {
     public enum Mode { Defending, Attacking }
     public Mode CurrentMode { get; protected set; } = Mode.Defending;
@@ -39,9 +40,14 @@ public abstract class MilitaryUnit : MonoBehaviour
     private float stuckThreshold = 1f; // movimento minimo
     private float stuckDuration = 1.5f;
 
-    protected virtual void Start()
+    public override void Spawned()
     {
-        AllUnits.Add(this);
+        base.Spawned();
+
+        if (HasStateAuthority)
+        {
+            AllUnits.Add(this);
+        }
 
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -60,6 +66,8 @@ public abstract class MilitaryUnit : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!HasStateAuthority) return;
+
         if (isDead) return;
 
         if (animator != null && agent != null)
@@ -283,10 +291,14 @@ public abstract class MilitaryUnit : MonoBehaviour
         }
 
         UnitManager.Instance.RemoveSoldier(this);
-        Destroy(gameObject);
+        OnUnitDestroyed();
+        if (Object != null && Object.IsValid)
+            Runner.Despawn(Object);
+        else
+            Destroy(gameObject);
     }
 
-    protected virtual void OnDestroy()
+    protected virtual void OnUnitDestroyed()
     {
         AllUnits.Remove(this);
     }

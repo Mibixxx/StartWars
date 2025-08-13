@@ -45,6 +45,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3359731385743895629}
   - component: {fileID: 5649903987203383331}
+  - component: {fileID: 4374385083545348417}
   m_Layer: 0
   m_Name: StablePrefab
   m_TagString: Untagged
@@ -85,6 +86,24 @@ MonoBehaviour:
   buildingData: {fileID: 11400000, guid: 38482781c79e75842b365e2b597d4106, type: 2}
   spawnPoint: {fileID: 5801272025739535389}
   progressBarCanvas: {fileID: 1454960607522424287}
+--- !u!114 &4374385083545348417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4285731516216832726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 345030122
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours: []
+  ForceRemoteRenderTimeframe: 0
 --- !u!1001 &6718025539004005719
 PrefabInstance:
   m_ObjectHideFlags: 0

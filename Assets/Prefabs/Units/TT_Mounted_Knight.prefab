@@ -11480,6 +11480,7 @@ GameObject:
   - component: {fileID: 2809255195746751691}
   - component: {fileID: 6892914572916492075}
   - component: {fileID: 5773124231311175247}
+  - component: {fileID: 2904636711742571651}
   m_Layer: 6
   m_Name: TT_Mounted_Knight
   m_TagString: Untagged
@@ -11692,6 +11693,25 @@ MonoBehaviour:
   damage: 0
   armor: 0
   healthBarPrefab: {fileID: 7906420332406927224}
+--- !u!114 &2904636711742571651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3286838606
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 5773124231311175247}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &158858
 GameObject:
   m_ObjectHideFlags: 0

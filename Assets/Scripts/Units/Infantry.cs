@@ -1,6 +1,6 @@
 public class Infantry : MilitaryUnit
 {
-    protected override void Start()
+    public override void Spawned()
     {
         maxHP = 100;
         damage = 20;
@@ -8,6 +8,6 @@ public class Infantry : MilitaryUnit
         moveSpeed = 7f;
         attackRange = 4f;
 
-        base.Start();
+        base.Spawned();
     }
 }

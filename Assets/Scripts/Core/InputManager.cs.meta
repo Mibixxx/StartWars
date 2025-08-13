@@ -1,2 +1,21 @@
 fileFormatVersion: 2
 guid: 4e288ccea17dc77439bcda54a6470b88
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - buildMenuUI: {instanceID: 0}
+  - townHallUI: {instanceID: 0}
+  - barracksUI: {instanceID: 0}
+  - archeryRangeUI: {instanceID: 0}
+  - stableUI: {instanceID: 0}
+  - townHallData: {instanceID: 0}
+  - barracksData: {instanceID: 0}
+  - archeryRangeData: {instanceID: 0}
+  - stableData: {instanceID: 0}
+  - networkRunner: {fileID: 8820671246607213875, guid: 5e98e9311c6ed624cb9734b204743e89, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
