@@ -9,9 +9,14 @@ using System.Linq;
 
 public class FusionNetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public static FusionNetworkManager Instance;
-    public NetworkRunner runnerPrefab;
+    public static FusionNetworkManager Instance { get; private set; }
+
+    [SerializeField] private NetworkRunner runnerPrefab;
+    [SerializeField] private GameObject playerPrefab; // Il prefab del giocatore di rete
+
     private NetworkRunner runnerInstance;
+    private readonly Dictionary<PlayerRef, Player> _spawnedPlayers = new Dictionary<PlayerRef, Player>();
+
 
     private void Awake()
     {
@@ -25,6 +30,28 @@ public class FusionNetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             Destroy(gameObject);
         }
+    }
+
+    public void AddPlayerToList(Player player)
+    {
+        if (!_spawnedPlayers.ContainsKey(player.PlayerRef))
+        {
+            _spawnedPlayers.Add(player.PlayerRef, player);
+        }
+    }
+
+    public void RemovePlayerFromList(Player player)
+    {
+        if (_spawnedPlayers.ContainsKey(player.PlayerRef))
+        {
+            _spawnedPlayers.Remove(player.PlayerRef);
+        }
+    }
+
+    public Player GetPlayer(PlayerRef playerRef)
+    {
+        _spawnedPlayers.TryGetValue(playerRef, out var player);
+        return player;
     }
 
     public NetworkRunner GetRunner() => runnerInstance;
@@ -102,21 +129,46 @@ public class FusionNetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"Player {player} joined. Total players: {runner.ActivePlayers.Count()}");
+        Debug.Log($"Player {player.PlayerId} joined. Total players: {runner.ActivePlayers.Count()}");
 
-        if (runner.ActivePlayers.Count() == 2)
+        // La logica di spawn viene eseguita solo dal server/host
+        if (runner.IsServer)
+        {
+            if (playerPrefab == null)
+            {
+                Debug.LogError("Il prefab del Player non è stato assegnato nel FusionNetworkManager!");
+                return;
+            }
+
+            Debug.Log($"Spawning player object for player {player.PlayerId}");
+
+            // Spawna il prefab del giocatore e assegna l'autorità di input al client che si è unito
+            NetworkObject networkPlayerObject = runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player);
+
+            // Associa il PlayerRef all'oggetto appena spawnato
+            var playerComponent = networkPlayerObject.GetComponent<Player>();
+            playerComponent.PlayerRef = player;
+
+            // Aggiungi il giocatore appena spawnato al dizionario per tenerne traccia
+            _spawnedPlayers.Add(player, playerComponent);
+        }
+
+        if (runner.ActivePlayers.Count() == 2 && runner.IsServer)
         {
             Debug.Log("Entrambi i giocatori connessi! Carico la scena di gioco...");
-
-            //DeactivateAllExceptNetworkManager();
-
-            SceneLoader.Instance.LoadScene("SinglePlayerScene");
+            runner.LoadScene("SinglePlayerScene"); // Usa runner.LoadScene per la gestione di scene in rete
         }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"Player {player} left.");
+        Debug.Log($"Player {player.PlayerId} left.");
+
+        // Trova l'oggetto del giocatore che si è disconnesso e distruggilo
+        if (_spawnedPlayers.TryGetValue(player, out Player playerObject))
+        {
+            playerObject.OnDisconnected(); // Chiama il metodo di pulizia sul player
+        }
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input) { }
@@ -125,7 +177,19 @@ public class FusionNetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner) { }
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
-    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { request.Accept(); }
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
+    {
+        if (runner.ActivePlayers.Count() >= 2)
+        {
+            // Rifiuta la connessione se la stanza è piena
+            request.Refuse();
+            Debug.Log("Connection refused: room is full.");
+        }
+        else
+        {
+            request.Accept();
+        }
+    }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
@@ -139,8 +203,16 @@ public class FusionNetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-    public void OnSceneLoadDone(NetworkRunner runner) { }
-    public void OnSceneLoadStart(NetworkRunner runner) { }
+    public void OnSceneLoadDone(NetworkRunner runner)
+    {
+        Debug.Log("Scene load done.");
+        // Qui potresti riposizionare i giocatori ai loro punti di spawn iniziali
+    }
+
+    public void OnSceneLoadStart(NetworkRunner runner)
+    {
+        Debug.Log("Scene load start.");
+    }
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
 
