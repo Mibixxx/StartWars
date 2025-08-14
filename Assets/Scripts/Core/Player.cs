@@ -5,8 +5,7 @@ public class Player : NetworkBehaviour
 {
     // Questo riferimento ci dice a quale giocatore di Fusion appartiene questo oggetto.
     // [Networked] significa che questa variabile è sincronizzata attraverso la rete.
-    // OnChanged è un callback che viene chiamato quando il valore di questa variabile cambia.
-    [Networked(OnChanged = nameof(OnPlayerChanged))]
+    [Networked]
     public PlayerRef PlayerRef { get; set; }
 
     // Riferimento al componente che gestisce le risorse di questo giocatore.
@@ -40,13 +39,6 @@ public class Player : NetworkBehaviour
         Debug.Log($"Player object for PlayerRef {PlayerRef.PlayerId} has been spawned.");
     }
 
-    // Questo è il callback che viene chiamato quando la proprietà PlayerRef cambia.
-    private static void OnPlayerChanged(Changed<Player> changed)
-    {
-        // Qui potremmo inserire logica aggiuntiva se necessario, ad esempio per aggiornare la UI
-        // quando il giocatore viene inizializzato.
-        Debug.Log($"PlayerRef for player object changed to {changed.Behaviour.PlayerRef}");
-    }
 
     public void OnDisconnected()
     {
