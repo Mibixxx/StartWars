@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5731889721788699901}
-  - component: {fileID: -2409595464974264589}
+  - component: {fileID: -4334384055439237430}
   - component: {fileID: -8612832772221578849}
+  - component: {fileID: 2851182398016457157}
   m_Layer: 0
   m_Name: ArcheryRangePrefab
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   - {fileID: 3767685129919230518}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2409595464974264589
+--- !u!114 &-4334384055439237430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,12 +46,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 137424516390768881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4823c91fe0398884a9c89550f293bad8, type: 3}
+  m_Script: {fileID: 11500000, guid: e26a7e7fab4d1184284765f68ff3afcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _IsUnderConstruction: 0
+  _IsBusy: 0
   buildingData: {fileID: 11400000, guid: 09b0bf3db8c726c40b0dbde2f15744e6, type: 2}
   spawnPoint: {fileID: 3220771802690761513}
+  _ownerResources: {fileID: 0}
   progressBarCanvas: {fileID: 5006772841172370283}
+  producibleUnits: 0300000004000000
 --- !u!114 &-8612832772221578849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,8 +72,27 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: -4334384055439237430}
+  - {fileID: 2851182398016457157}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &2851182398016457157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137424516390768881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &5484726341598646893
 GameObject:
   m_ObjectHideFlags: 0

@@ -10799,6 +10799,7 @@ GameObject:
   - component: {fileID: 446886}
   - component: {fileID: 3357402}
   - component: {fileID: 2308382}
+  - component: {fileID: 8998513385817791996}
   m_Layer: 6
   m_Name: Head_03b
   m_TagString: Untagged
@@ -10874,6 +10875,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8998513385817791996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5256890349e120241935e7ca68897f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  neutralTexture: {fileID: 2800000, guid: 9f94d491ebee8d04d8124b25f485a94b, type: 3}
+  player1Texture: {fileID: 2800000, guid: 58070d2e94dfb6e4cacf0aec8c770c43, type: 3}
+  player2Texture: {fileID: 2800000, guid: f404751c35aed644a81f56cf0406073a, type: 3}
 --- !u!1 &161050
 GameObject:
   m_ObjectHideFlags: 0
@@ -14289,8 +14305,10 @@ GameObject:
   - component: {fileID: 8372560622103046811}
   - component: {fileID: 5996330251232648323}
   - component: {fileID: -2386409672359001510}
-  - component: {fileID: 9132592670077446680}
+  - component: {fileID: -7897401173113318779}
   - component: {fileID: -8128623384559545759}
+  - component: {fileID: 5365885999432496748}
+  - component: {fileID: 330143804945608741}
   m_Layer: 6
   m_Name: TT_Archer
   m_TagString: Untagged
@@ -14471,7 +14489,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.91, z: 0}
---- !u!114 &9132592670077446680
+--- !u!114 &-7897401173113318779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14480,22 +14498,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 179124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eadbf6ca46d6f5e47a3f19a3b1cb47d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f2bae4f2010f0541976ab2f960ffd6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _CurrentMode: 0
+  _CurrentHP: 0
   enemyVillage: {fileID: 9152812069614063344, guid: cac667013cd60044fab197c30663c8b6, type: 3}
   combatArea: {fileID: -3334654614360536658, guid: cac667013cd60044fab197c30663c8b6, type: 3}
-  attackRange: 15
+  attackRange: 8
   attackCooldown: 1.2
-  enemyUnitLayer:
-    serializedVersion: 2
-    m_Bits: 128
   moveSpeed: 1
   maxHP: 0
-  currentHP: 0
   damage: 0
   armor: 0
   healthBarPrefab: {fileID: 4698747952647595225}
+  _IsInCombatArea: 0
   arrowPrefab: {fileID: 1572495793246531321, guid: 7c5cd2740422c794a83fa7fa13f5779f, type: 3}
   arrowSpawnPoint: {fileID: 2109495939752148959}
   fireRate: 1.5
@@ -14516,8 +14533,47 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 9132592670077446680}
+  - {fileID: -7897401173113318779}
+  - {fileID: 5365885999432496748}
+  - {fileID: 330143804945608741}
+  - {fileID: 8998513385817791996}
+  - {fileID: 4359847986745580342}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &5365885999432496748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
+--- !u!114 &330143804945608741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 9563318}
+  ApplyTiming: 2
+  SyncSettings: 79
+  StateHashes: 000000002b1a167c7940695520e23b685928a8ce0d286c404e865f43
+  TriggerHashes: 000000000d286c40
+  TotalWords: 2
 --- !u!1 &179126
 GameObject:
   m_ObjectHideFlags: 0
@@ -15398,6 +15454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 449304}
   - component: {fileID: 13742854}
+  - component: {fileID: 4359847986745580342}
   m_Layer: 6
   m_Name: Body_03a
   m_TagString: Untagged
@@ -15490,6 +15547,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.06498811, y: 0.020641163, z: 0.00000014901161}
     m_Extent: {x: 0.5143604, y: 0.28673673, z: 0.7707151}
   m_DirtyAABB: 0
+--- !u!114 &4359847986745580342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5256890349e120241935e7ca68897f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  neutralTexture: {fileID: 2800000, guid: 9f94d491ebee8d04d8124b25f485a94b, type: 3}
+  player1Texture: {fileID: 2800000, guid: 58070d2e94dfb6e4cacf0aec8c770c43, type: 3}
+  player2Texture: {fileID: 2800000, guid: f404751c35aed644a81f56cf0406073a, type: 3}
 --- !u!1 &183062
 GameObject:
   m_ObjectHideFlags: 0

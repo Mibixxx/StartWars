@@ -44,8 +44,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 576493655229248167}
-  - component: {fileID: 2039292983001770035}
+  - component: {fileID: 4257955870162835078}
   - component: {fileID: -899385693320334423}
+  - component: {fileID: 8603931142264918632}
   m_Layer: 0
   m_Name: BarracksPrefab
   m_TagString: Untagged
@@ -71,7 +72,7 @@ Transform:
   - {fileID: 8923718549315405466}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2039292983001770035
+--- !u!114 &4257955870162835078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,12 +81,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7781530897025321176}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dbaefb6eca8c4e479f2cc52a95d059f, type: 3}
+  m_Script: {fileID: 11500000, guid: ea1db07261480a04c8fe644e4aa2847a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _IsUnderConstruction: 0
+  _IsBusy: 0
   buildingData: {fileID: 11400000, guid: 582e1743d5fa8484ebf289e2502a7f28, type: 2}
   spawnPoint: {fileID: 542153827664951803}
+  _ownerResources: {fileID: 0}
   progressBarCanvas: {fileID: 785115397119424455}
+  producibleUnits: 0100000002000000
 --- !u!114 &-899385693320334423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,8 +107,27 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 4257955870162835078}
+  - {fileID: 8603931142264918632}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &8603931142264918632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7781530897025321176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1001 &4895267795398577999
 PrefabInstance:
   m_ObjectHideFlags: 0

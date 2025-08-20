@@ -51,8 +51,9 @@ GameObject:
   - component: {fileID: 3163936273505523812}
   - component: {fileID: 7126256098867097056}
   - component: {fileID: 4040295103950400419}
-  - component: {fileID: 7110767310392236087}
+  - component: {fileID: -1043253428416700311}
   - component: {fileID: 5921678408114195442}
+  - component: {fileID: 8473506624467641470}
   m_Layer: 0
   m_Name: TileCityEmptyPrefab
   m_TagString: Untagged
@@ -171,7 +172,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7110767310392236087
+--- !u!114 &-1043253428416700311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,7 +181,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6306733561352949456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59dcd33a548f39648a92d9819c5a201f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a6c33738d204db49bd4e44e4aa4792a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   visualToHide: {fileID: 1138001546991586477}
@@ -216,6 +217,25 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 346a003d4f1d6aa41800e7fc3a420abb, type: 2}
   m_BuildHeightMesh: 0
+--- !u!114 &8473506624467641470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6306733561352949456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1596441020
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -1043253428416700311}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1001 &246946219712706121
 PrefabInstance:
   m_ObjectHideFlags: 0

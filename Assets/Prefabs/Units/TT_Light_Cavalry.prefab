@@ -4723,6 +4723,7 @@ GameObject:
   - component: {fileID: 459340}
   - component: {fileID: 3377432}
   - component: {fileID: 2344686}
+  - component: {fileID: 1485035249015253586}
   m_Layer: 6
   m_Name: shield_08
   m_TagString: Untagged
@@ -4798,6 +4799,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1485035249015253586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5256890349e120241935e7ca68897f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  neutralTexture: {fileID: 2800000, guid: 9f94d491ebee8d04d8124b25f485a94b, type: 3}
+  player1Texture: {fileID: 2800000, guid: 58070d2e94dfb6e4cacf0aec8c770c43, type: 3}
+  player2Texture: {fileID: 2800000, guid: f404751c35aed644a81f56cf0406073a, type: 3}
 --- !u!1 &125984
 GameObject:
   m_ObjectHideFlags: 0
@@ -12907,6 +12923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 409816}
   - component: {fileID: 13762374}
+  - component: {fileID: 7227851079836936071}
   m_Layer: 6
   m_Name: Body_04a
   m_TagString: Untagged
@@ -12999,6 +13016,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.08791646, y: 0.037327185, z: 0.0062330365}
     m_Extent: {x: 0.50712407, y: 0.33821166, z: 0.6415749}
   m_DirtyAABB: 0
+--- !u!114 &7227851079836936071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5256890349e120241935e7ca68897f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  neutralTexture: {fileID: 2800000, guid: 9f94d491ebee8d04d8124b25f485a94b, type: 3}
+  player1Texture: {fileID: 2800000, guid: 58070d2e94dfb6e4cacf0aec8c770c43, type: 3}
+  player2Texture: {fileID: 2800000, guid: f404751c35aed644a81f56cf0406073a, type: 3}
 --- !u!1 &166856
 GameObject:
   m_ObjectHideFlags: 0
@@ -14393,8 +14425,10 @@ GameObject:
   - component: {fileID: -3218978428786480144}
   - component: {fileID: 2873316253919935495}
   - component: {fileID: 1587250002602741144}
-  - component: {fileID: 1978436817924417604}
+  - component: {fileID: -3348758522801278761}
   - component: {fileID: 8247339923464991750}
+  - component: {fileID: -4977157532974054230}
+  - component: {fileID: 601433418204967123}
   m_Layer: 6
   m_Name: TT_Light_Cavalry
   m_TagString: Untagged
@@ -14582,7 +14616,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.91, z: 0}
---- !u!114 &1978436817924417604
+--- !u!114 &-3348758522801278761
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14591,22 +14625,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 172856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f554d547ba4103044bd1ee7aeb1cfed0, type: 3}
+  m_Script: {fileID: 11500000, guid: bef1ea7ba3d3e3841b7254de7edbb021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _CurrentMode: 0
+  _CurrentHP: 0
   enemyVillage: {fileID: 9152812069614063344, guid: cac667013cd60044fab197c30663c8b6, type: 3}
   combatArea: {fileID: -3334654614360536658, guid: cac667013cd60044fab197c30663c8b6, type: 3}
   attackRange: 4
   attackCooldown: 1.2
-  enemyUnitLayer:
-    serializedVersion: 2
-    m_Bits: 128
   moveSpeed: 1.4
   maxHP: 0
-  currentHP: 0
   damage: 0
   armor: 0
   healthBarPrefab: {fileID: 74098322620930406}
+  _IsInCombatArea: 0
 --- !u!114 &8247339923464991750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14624,8 +14657,47 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 1978436817924417604}
+  - {fileID: -3348758522801278761}
+  - {fileID: -4977157532974054230}
+  - {fileID: 601433418204967123}
+  - {fileID: 1485035249015253586}
+  - {fileID: 7227851079836936071}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &-4977157532974054230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
+--- !u!114 &601433418204967123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 9516860}
+  ApplyTiming: 2
+  SyncSettings: 79
+  StateHashes: 000000002b1a167c7940695520e23b685928a8ce0d286c404e865f43
+  TriggerHashes: 000000000d286c40
+  TotalWords: 2
 --- !u!1 &172872
 GameObject:
   m_ObjectHideFlags: 0

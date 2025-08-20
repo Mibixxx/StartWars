@@ -967,7 +967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   singlePlayerButton: {fileID: 1476387382}
   multiplayerButton: {fileID: 782373012}
-  gameSceneName: SinglePlayerScene
+  gameSceneName: MultiPlayerScene
 --- !u!1 &1476387381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,9 +1134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runnerPrefab: {fileID: 8820671246607213875, guid: 5e98e9311c6ed624cb9734b204743e89, type: 3}
-  networkPlayerPrefab: {fileID: -7810078530270922000, guid: 5737851bb58b6de40ae0af4ae2d3cbdb, type: 3}
-  buildingPrefabs:
-  - {fileID: -899385693320334423, guid: 98bb2417196f89d4aa108c8c1fcc03fb, type: 3}
+  playerPrefab: {fileID: 8900776152869246394, guid: 7c8a39daaf9b43048b03a08aadffce3e, type: 3}
 --- !u!1 &1731511815
 GameObject:
   m_ObjectHideFlags: 0
